@@ -2,6 +2,9 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_thecatapi/auth/auth.dart';
+import 'package:flutter_thecatapi/cat/cat_page.dart';
+import 'package:flutter_thecatapi/login/login_page.dart';
+import 'package:flutter_thecatapi/splash/splash_page.dart';
 import 'package:user_repository/user_repository.dart';
 
 class App extends StatelessWidget {
@@ -9,7 +12,7 @@ class App extends StatelessWidget {
     Key key,
     @required this.authRepository,
     @required this.userRepository,
-  })  : assert(AuthRepository != null),
+  })  : assert(authRepository != null),
         assert(userRepository != null),
         super(key: key);
 
@@ -19,7 +22,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
-      value: AuthRepository,
+      value: authRepository,
       child: BlocProvider(
         create: (_) => AuthBloc(
           authRepository: authRepository,
@@ -51,7 +54,7 @@ class _AppViewState extends State<AppView> {
             switch (state.status) {
               case AuthStatus.authenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  HomePage.route(),
+                  CatHomePage.route(),
                   (route) => false,
                 );
                 break;
