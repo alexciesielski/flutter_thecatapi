@@ -2,8 +2,8 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_thecatapi/auth/auth.dart';
+import 'package:flutter_thecatapi/auth/login/login_page.dart';
 import 'package:flutter_thecatapi/cat/cat_page.dart';
-import 'package:flutter_thecatapi/login/login_page.dart';
 import 'package:flutter_thecatapi/splash/splash_page.dart';
 import 'package:user_repository/user_repository.dart';
 
