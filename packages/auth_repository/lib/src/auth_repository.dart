@@ -1,15 +1,23 @@
 import 'dart:async';
 
+import 'package:localstorage/localstorage.dart';
 import 'package:meta/meta.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
 class AuthRepository {
   final _controller = StreamController<AuthStatus>();
+  final _storage = LocalStorage('catapi.json');
 
   Stream<AuthStatus> get status async* {
     await Future<void>.delayed(const Duration(milliseconds: 1000));
-    yield AuthStatus.unauthenticated;
+    final authenticated = await _storage.getItem('authenticated');
+    if (authenticated == true) {
+      yield AuthStatus.authenticated;
+    } else {
+      yield AuthStatus.unauthenticated;
+    }
+
     yield* _controller.stream;
   }
 
@@ -21,13 +29,17 @@ class AuthRepository {
     assert(password != null);
 
     await Future.delayed(
-      const Duration(milliseconds: 750),
-      () => _controller.add(AuthStatus.authenticated),
-    );
+        const Duration(milliseconds: 750), () => {_loggedIn()});
   }
 
-  void logOut() {
+  Future<void> logOut() {
     _controller.add(AuthStatus.unauthenticated);
+    return _storage.clear();
+  }
+
+  void _loggedIn() {
+    _controller.add(AuthStatus.authenticated);
+    _storage.setItem('authenticated', true);
   }
 
   void dispose() => _controller.close();
